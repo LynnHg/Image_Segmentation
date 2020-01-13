@@ -3,6 +3,7 @@ import random
 import math
 import cv2
 import csv
+import time, datetime
 import numpy as np
 from utils_pkg import config
 
@@ -156,3 +157,10 @@ def one_hot_it(label, label_values):
     semantic_map = np.stack(semantic_map, axis=-1)
 
     return semantic_map
+
+def LOG(X, f=None):
+    time_stamp = datetime.datetime.now().strftime("[%Y-%m-%d %H:%M:%S]")
+    if not f:
+        print(time_stamp + " " + X)
+    else:
+        f.write(time_stamp + " " + X)
