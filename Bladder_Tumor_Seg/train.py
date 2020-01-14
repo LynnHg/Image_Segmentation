@@ -5,14 +5,14 @@ import numpy as np
 import cv2
 import time
 import matplotlib.pyplot as plt
-from utils_pkg import utils
+from utils_pkg import utils, helpers
 from utils_pkg import config
 from models_pkg.Unet import Unet
 
 np.set_printoptions(threshold=9999999)
 
 train_input_names, train_label_names, val_input_names, val_label_names = utils.partition_data(config.root_path)
-class_names_list, label_values = utils.get_label_info(os.path.join(config.root_path, "class_dict.csv"))
+class_names_list, label_values = helpers.get_label_info(os.path.join(config.root_path, "class_dict.csv"))
 num_classes = len(label_values)
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -80,7 +80,6 @@ for epoch in range(1, config.num_epoches + 1):
         count = count + config.batch_size
         if count % 20 == 0:
             string_print = "Epoch = %d Count = %d Current_Loss = %.4f Time = %.2f" % (
-            epoch, count, current, time.time() - st)
+                epoch, count, current, time.time() - st)
             utils.LOG(string_print)
             st = time.time()
-

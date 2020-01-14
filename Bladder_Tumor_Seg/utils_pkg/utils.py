@@ -111,56 +111,6 @@ def data_augmentation(input_image, output_image):
 
     return input_image, output_image
 
-
-def get_label_info(csv_path):
-    """
-    Retrieve the class names and label values for the selected dataset.
-    Must be in CSV format!
-
-    # Arguments
-        csv_path: The file path of the class dictionairy
-
-    # Returns
-        Two lists: one for the class names and the other for the label values
-    """
-    filename, file_extension = os.path.splitext(csv_path)
-    if not file_extension == ".csv":
-        return ValueError("File is not a CSV!")
-
-    class_names = []
-    label_values = []
-    with open(csv_path, 'r') as csvfile:
-        file_reader = csv.reader(csvfile, delimiter=',')
-        header = next(file_reader)
-        for row in file_reader:
-            class_names.append(row[0])
-            label_values.append([int(row[1])])
-        # print(class_dict)
-    return class_names, label_values
-
-
-def one_hot_it(label, label_values):
-    """
-    Convert a segmentation image label array to one-hot format
-    by replacing each pixel value with a vector of length num_classes
-
-    # Arguments
-        label: The 2D array segmentation image label
-        label_values
-
-    # Returns
-        A 2D array with the same width and hieght as the input, but
-        with a depth size of num_classes
-    """
-    semantic_map = []
-    for colour in label_values:
-        equality = np.equal(label, colour)
-        class_map = np.all(equality, axis=-1)
-        semantic_map.append(class_map)
-    semantic_map = np.stack(semantic_map, axis=-1)
-
-    return semantic_map
-
 def log(X, f=None):
     time_stamp = datetime.datetime.now().strftime("[%Y-%m-%d %H:%M:%S]")
     if not f:
