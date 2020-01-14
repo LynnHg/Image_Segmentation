@@ -5,6 +5,9 @@ import cv2
 import csv
 import time, datetime
 import numpy as np
+
+import torch
+
 from utils_pkg import config
 
 
@@ -158,9 +161,18 @@ def one_hot_it(label, label_values):
 
     return semantic_map
 
-def LOG(X, f=None):
+def log(X, f=None):
     time_stamp = datetime.datetime.now().strftime("[%Y-%m-%d %H:%M:%S]")
     if not f:
         print(time_stamp + " " + X)
     else:
         f.write(time_stamp + " " + X)
+
+# 设置seed的函数，用于保证实验结果可再现
+def seed_everything(seed):
+    random.seed(seed)
+    os.environ["PYTHONHASHSEED"] = str(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.backends.cudnn.deterministic = True
