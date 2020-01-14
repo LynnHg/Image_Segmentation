@@ -5,7 +5,7 @@ import numpy as np
 import cv2
 import time
 import matplotlib.pyplot as plt
-from utils_pkg import utils, helpers
+from utils_pkg import utils, lossfun
 from datas import dataloader
 from utils_pkg import config
 from models_pkg.Unet import Unet
@@ -17,7 +17,7 @@ x = torch.randn([3, 1, 160, 160])
 x = x.to(device)
 model = Unet(1, 2)
 model = model.to(device)
-criterion = torch.nn.BCELoss().to(device)
+criterion = lossfun.DiceLoss().to(device)
 optimizer = torch.optim.SGD(model.parameters(), lr=1e-2, momentum=0.7)
 
 for epoch in range(1, config.num_epoches + 1):
