@@ -1,4 +1,5 @@
 import os
+import torch
 import numpy as np
 from utils_pkg import config, utils, helpers
 
@@ -6,7 +7,7 @@ from utils_pkg import config, utils, helpers
 class_names_list, label_values = helpers.get_label_info(os.path.join(config.root_path, "class_dict.csv"))
 
 class Dataset:
-    def __init__(self, rootpath: str = config.root_path, datatype: str = "train"):
+    def __init__(self, rootpath: str, datatype: str = "train"):
 
         self.datatype = datatype
         # 加载数据集文件名
@@ -35,6 +36,11 @@ class Dataset:
         # 归一化，one-hot编码，将每个像素点映射成类别向量
         input_image = np.float32(input_image) / 255.0
         label_image = np.float32(helpers.one_hot_it(label=label_image, label_values=label_values))
+        # numpy to tensor，转换维度 shape:[H,W,C] -> [C,H,W]
+        input_image = input_image.transpose([2, 0, 1])
+        label_image = label_image.transpose([2, 0, 1])
+        input_image = torch.from_numpy(input_image)
+        label_image = torch.from_numpy(label_image)
         return input_image, label_image
 
     def __len__(self):

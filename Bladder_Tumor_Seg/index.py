@@ -8,13 +8,7 @@ from utils_pkg import config
 import matplotlib.pyplot as plt
 from datas import dataset, dataloader
 
-# for i, j in dataloader.dataloader():
-#     pass
+for images, labels in dataloader.dataloader(config.root_path, "val"):
+    print(images.shape)
+    print(labels.shape)
 
-colour_codes = np.array([[128], [255], [0]])
-a = np.array([[0,0,0],[0,1,2],[2,2,2]])
-print(a.shape)
-x = colour_codes[a.astype(int)]
-
-print(x)
-print(x.shape)
